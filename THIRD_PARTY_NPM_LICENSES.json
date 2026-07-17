@@ -1,0 +1,1194 @@
+{
+  "0BSD": [
+    {
+      "author": "Microsoft Corp.",
+      "description": "Runtime library for TypeScript helper functions",
+      "homepage": "https://www.typescriptlang.org/",
+      "license": "0BSD",
+      "name": "tslib",
+      "versions": ["2.8.1"]
+    }
+  ],
+  "Apache-2.0": [
+    {
+      "author": "Joe Bell",
+      "description": "Class Variance Authority 🧬",
+      "homepage": "https://github.com/joe-bell/cva#readme",
+      "license": "Apache-2.0",
+      "name": "class-variance-authority",
+      "versions": ["0.7.1"]
+    },
+    {
+      "author": "Thomas Wilkerling",
+      "description": "Next-Generation full-text search library for Browser and Node.js",
+      "homepage": "https://github.com/nextapps-de/flexsearch/",
+      "license": "Apache-2.0",
+      "name": "flexsearch",
+      "versions": ["0.8.212"]
+    },
+    {
+      "author": "Microsoft Corp.",
+      "description": "TypeScript is a language for application scale JavaScript development",
+      "homepage": "https://www.typescriptlang.org/",
+      "license": "Apache-2.0",
+      "name": "typescript",
+      "versions": ["5.9.2"]
+    }
+  ],
+  "Apache-2.0 OR MIT": [
+    {
+      "description": "Tauri API definitions",
+      "homepage": "https://github.com/tauri-apps/tauri#readme",
+      "license": "Apache-2.0 OR MIT",
+      "name": "@tauri-apps/api",
+      "versions": ["2.8.0"]
+    }
+  ],
+  "BSD-3-Clause": [
+    {
+      "author": "Mike Bostock",
+      "description": "Easing functions for smooth animation.",
+      "homepage": "https://d3js.org/d3-ease/",
+      "license": "BSD-3-Clause",
+      "name": "d3-ease",
+      "versions": ["3.0.1"]
+    },
+    {
+      "author": "Cynthia",
+      "description": "A small, fast, and correct TOML parser/serializer",
+      "homepage": "https://github.com/squirrelchat/smol-toml#readme",
+      "license": "BSD-3-Clause",
+      "name": "smol-toml",
+      "versions": ["1.4.2"]
+    }
+  ],
+  "ISC": [
+    {
+      "author": "Mike Bostock",
+      "description": "Array manipulation, ordering, searching, summarizing, etc.",
+      "homepage": "https://d3js.org/d3-array/",
+      "license": "ISC",
+      "name": "d3-array",
+      "versions": ["3.2.4"]
+    },
+    {
+      "author": "Mike Bostock",
+      "description": "Color spaces! RGB, HSL, Cubehelix, Lab and HCL (Lch).",
+      "homepage": "https://d3js.org/d3-color/",
+      "license": "ISC",
+      "name": "d3-color",
+      "versions": ["3.1.0"]
+    },
+    {
+      "author": "Mike Bostock",
+      "description": "Format numbers for human consumption.",
+      "homepage": "https://d3js.org/d3-format/",
+      "license": "ISC",
+      "name": "d3-format",
+      "versions": ["3.1.0"]
+    },
+    {
+      "author": "Mike Bostock",
+      "description": "Interpolate numbers, colors, strings, arrays, objects, whatever!",
+      "homepage": "https://d3js.org/d3-interpolate/",
+      "license": "ISC",
+      "name": "d3-interpolate",
+      "versions": ["3.0.1"]
+    },
+    {
+      "author": "Mike Bostock",
+      "description": "Serialize Canvas path commands to SVG.",
+      "homepage": "https://d3js.org/d3-path/",
+      "license": "ISC",
+      "name": "d3-path",
+      "versions": ["3.1.0"]
+    },
+    {
+      "author": "Mike Bostock",
+      "description": "Encodings that map abstract data to visual representation.",
+      "homepage": "https://d3js.org/d3-scale/",
+      "license": "ISC",
+      "name": "d3-scale",
+      "versions": ["4.0.2"]
+    },
+    {
+      "author": "Mike Bostock",
+      "description": "Graphical primitives for visualization, such as lines and areas.",
+      "homepage": "https://d3js.org/d3-shape/",
+      "license": "ISC",
+      "name": "d3-shape",
+      "versions": ["3.2.0"]
+    },
+    {
+      "author": "Mike Bostock",
+      "description": "A calculator for humanity’s peculiar conventions of time.",
+      "homepage": "https://d3js.org/d3-time/",
+      "license": "ISC",
+      "name": "d3-time",
+      "versions": ["3.1.0"]
+    },
+    {
+      "author": "Mike Bostock",
+      "description": "A JavaScript time formatter and parser inspired by strftime and strptime.",
+      "homepage": "https://d3js.org/d3-time-format/",
+      "license": "ISC",
+      "name": "d3-time-format",
+      "versions": ["4.1.0"]
+    },
+    {
+      "author": "Mike Bostock",
+      "description": "An efficient queue capable of managing thousands of concurrent animations.",
+      "homepage": "https://d3js.org/d3-timer/",
+      "license": "ISC",
+      "name": "d3-timer",
+      "versions": ["3.0.1"]
+    },
+    {
+      "author": "Mike Bostock",
+      "description": "Map and Set with automatic key interning",
+      "homepage": "https://github.com/mbostock/internmap/",
+      "license": "ISC",
+      "name": "internmap",
+      "versions": ["2.0.3"]
+    },
+    {
+      "author": "Eric Fennis",
+      "description": "A Lucide icon library package for React applications.",
+      "homepage": "https://lucide.dev",
+      "license": "ISC",
+      "name": "lucide-react",
+      "versions": ["0.542.0"]
+    }
+  ],
+  "MIT": [
+    {
+      "author": "The Babel Team",
+      "description": "babel's modular runtime helpers",
+      "homepage": "https://babel.dev/docs/en/next/babel-runtime",
+      "license": "MIT",
+      "name": "@babel/runtime",
+      "versions": ["7.28.4"]
+    },
+    {
+      "author": "Marijn Haverbeke",
+      "description": "Autocompletion for the CodeMirror code editor",
+      "homepage": "https://github.com/codemirror/autocomplete#readme",
+      "license": "MIT",
+      "name": "@codemirror/autocomplete",
+      "versions": ["6.18.7"]
+    },
+    {
+      "author": "Marijn Haverbeke",
+      "description": "Collection of editing commands for the CodeMirror code editor",
+      "homepage": "https://github.com/codemirror/commands#readme",
+      "license": "MIT",
+      "name": "@codemirror/commands",
+      "versions": ["6.8.1"]
+    },
+    {
+      "author": "Marijn Haverbeke",
+      "description": "CSS language support for the CodeMirror code editor",
+      "homepage": "https://github.com/codemirror/lang-css#readme",
+      "license": "MIT",
+      "name": "@codemirror/lang-css",
+      "versions": ["6.3.1"]
+    },
+    {
+      "author": "Marijn Haverbeke",
+      "description": "HTML language support for the CodeMirror code editor",
+      "homepage": "https://github.com/codemirror/lang-html#readme",
+      "license": "MIT",
+      "name": "@codemirror/lang-html",
+      "versions": ["6.4.11"]
+    },
+    {
+      "author": "Marijn Haverbeke",
+      "description": "JavaScript language support for the CodeMirror code editor",
+      "homepage": "https://github.com/codemirror/lang-javascript#readme",
+      "license": "MIT",
+      "name": "@codemirror/lang-javascript",
+      "versions": ["6.2.4"]
+    },
+    {
+      "author": "Marijn Haverbeke",
+      "description": "JSON language support for the CodeMirror code editor",
+      "homepage": "https://github.com/codemirror/lang-json#readme",
+      "license": "MIT",
+      "name": "@codemirror/lang-json",
+      "versions": ["6.0.2"]
+    },
+    {
+      "author": "Marijn Haverbeke",
+      "description": "Markdown language support for the CodeMirror code editor",
+      "homepage": "https://github.com/codemirror/lang-markdown#readme",
+      "license": "MIT",
+      "name": "@codemirror/lang-markdown",
+      "versions": ["6.5.0"]
+    },
+    {
+      "author": "Marijn Haverbeke",
+      "description": "Language support infrastructure for the CodeMirror code editor",
+      "homepage": "https://github.com/codemirror/language#readme",
+      "license": "MIT",
+      "name": "@codemirror/language",
+      "versions": ["6.11.3"]
+    },
+    {
+      "author": "Marijn Haverbeke",
+      "description": "Linting support for the CodeMirror code editor",
+      "homepage": "https://github.com/codemirror/lint#readme",
+      "license": "MIT",
+      "name": "@codemirror/lint",
+      "versions": ["6.8.5"]
+    },
+    {
+      "author": "Marijn Haverbeke",
+      "description": "Search functionality for the CodeMirror code editor",
+      "homepage": "https://github.com/codemirror/search#readme",
+      "license": "MIT",
+      "name": "@codemirror/search",
+      "versions": ["6.5.11"]
+    },
+    {
+      "author": "Marijn Haverbeke",
+      "description": "Editor state data structures for the CodeMirror code editor",
+      "homepage": "https://github.com/codemirror/state#readme",
+      "license": "MIT",
+      "name": "@codemirror/state",
+      "versions": ["6.5.2"]
+    },
+    {
+      "author": "Marijn Haverbeke",
+      "description": "One Dark theme for the CodeMirror code editor",
+      "homepage": "https://github.com/codemirror/theme-one-dark#readme",
+      "license": "MIT",
+      "name": "@codemirror/theme-one-dark",
+      "versions": ["6.1.3"]
+    },
+    {
+      "author": "Marijn Haverbeke",
+      "description": "DOM view component for the CodeMirror code editor",
+      "homepage": "https://github.com/codemirror/view#readme",
+      "license": "MIT",
+      "name": "@codemirror/view",
+      "versions": ["6.38.2"]
+    },
+    {
+      "author": "Claudéric Demers",
+      "description": "A generic toolkit to help with accessibility",
+      "homepage": "https://github.com/clauderic/dnd-kit#readme",
+      "license": "MIT",
+      "name": "@dnd-kit/accessibility",
+      "versions": ["3.1.1"]
+    },
+    {
+      "author": "Claudéric Demers",
+      "description": "dnd kit – a lightweight React library for building performant and accessible drag and drop experiences",
+      "homepage": "https://github.com/clauderic/dnd-kit#readme",
+      "license": "MIT",
+      "name": "@dnd-kit/core",
+      "versions": ["6.3.1"]
+    },
+    {
+      "author": "Claudéric Demers",
+      "description": "Official sortable preset and sensors for dnd kit",
+      "homepage": "https://github.com/clauderic/dnd-kit#readme",
+      "license": "MIT",
+      "name": "@dnd-kit/sortable",
+      "versions": ["10.0.0"]
+    },
+    {
+      "author": "Claudéric Demers",
+      "description": "Internal utilities to bee shared between `@dnd-kit` packages",
+      "homepage": "https://github.com/clauderic/dnd-kit#readme",
+      "license": "MIT",
+      "name": "@dnd-kit/utilities",
+      "versions": ["3.2.2"]
+    },
+    {
+      "author": "atomiks",
+      "description": "Positioning library for floating elements: tooltips, popovers, dropdowns, and more",
+      "homepage": "https://floating-ui.com",
+      "license": "MIT",
+      "name": "@floating-ui/core",
+      "versions": ["1.7.3"]
+    },
+    {
+      "author": "atomiks",
+      "description": "Floating UI for the web",
+      "homepage": "https://floating-ui.com",
+      "license": "MIT",
+      "name": "@floating-ui/dom",
+      "versions": ["1.7.4"]
+    },
+    {
+      "author": "atomiks",
+      "description": "Floating UI for React DOM",
+      "homepage": "https://floating-ui.com/docs/react-dom",
+      "license": "MIT",
+      "name": "@floating-ui/react-dom",
+      "versions": ["2.1.6"]
+    },
+    {
+      "author": "atomiks",
+      "description": "Utilities for Floating UI",
+      "homepage": "https://floating-ui.com",
+      "license": "MIT",
+      "name": "@floating-ui/utils",
+      "versions": ["0.2.10"]
+    },
+    {
+      "author": "bluebill1049",
+      "description": "React Hook Form validation resolvers: Yup, Joi, Superstruct, Zod, Vest, Class Validator, io-ts, Nope, computed-types, TypeBox, arktype, Typanion, Effect-TS and VineJS",
+      "homepage": "https://react-hook-form.com",
+      "license": "MIT",
+      "name": "@hookform/resolvers",
+      "versions": ["5.2.2"]
+    },
+    {
+      "author": "Marijn Haverbeke",
+      "description": "Syntax tree data structure and parser interfaces for the lezer parser",
+      "homepage": "https://github.com/lezer-parser/common#readme",
+      "license": "MIT",
+      "name": "@lezer/common",
+      "versions": ["1.2.3"]
+    },
+    {
+      "author": "Marijn Haverbeke",
+      "description": "lezer-based CSS grammar",
+      "homepage": "https://github.com/lezer-parser/css#readme",
+      "license": "MIT",
+      "name": "@lezer/css",
+      "versions": ["1.3.0"]
+    },
+    {
+      "author": "Marijn Haverbeke",
+      "description": "Highlighting system for Lezer parse trees",
+      "homepage": "https://github.com/lezer-parser/highlight#readme",
+      "license": "MIT",
+      "name": "@lezer/highlight",
+      "versions": ["1.2.1"]
+    },
+    {
+      "author": "Marijn Haverbeke",
+      "description": "lezer-based HTML grammar",
+      "homepage": "https://github.com/lezer-parser/html#readme",
+      "license": "MIT",
+      "name": "@lezer/html",
+      "versions": ["1.3.12"]
+    },
+    {
+      "author": "Marijn Haverbeke",
+      "description": "lezer-based JavaScript grammar",
+      "homepage": "https://github.com/lezer-parser/javascript#readme",
+      "license": "MIT",
+      "name": "@lezer/javascript",
+      "versions": ["1.5.4"]
+    },
+    {
+      "author": "Arun Srinivasan",
+      "description": "lezer-based JSON grammar",
+      "homepage": "https://github.com/lezer-parser/json#readme",
+      "license": "MIT",
+      "name": "@lezer/json",
+      "versions": ["1.0.3"]
+    },
+    {
+      "author": "Marijn Haverbeke",
+      "description": "Incremental parser",
+      "homepage": "https://github.com/lezer-parser/lr#readme",
+      "license": "MIT",
+      "name": "@lezer/lr",
+      "versions": ["1.4.2"]
+    },
+    {
+      "author": "Marijn Haverbeke",
+      "description": "Incremental Markdown parser that consumes and emits Lezer trees",
+      "homepage": "https://github.com/lezer-parser/markdown#readme",
+      "license": "MIT",
+      "name": "@lezer/markdown",
+      "versions": ["1.6.0"]
+    },
+    {
+      "author": "LobeHub",
+      "description": "Popular AI / LLM Model Brand SVG Logo and Icon Collection",
+      "homepage": "https://github.com/lobehub/lobe-icons",
+      "license": "MIT",
+      "name": "@lobehub/icons-static-svg",
+      "versions": ["1.73.0"]
+    },
+    {
+      "author": "Marijn Haverbeke",
+      "description": "Find the position of grapheme cluster breaks in a string",
+      "homepage": "https://github.com/marijnh/find-cluster-break#readme",
+      "license": "MIT",
+      "name": "@marijn/find-cluster-break",
+      "versions": ["1.0.2"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/number",
+      "versions": ["1.1.1"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/primitive",
+      "versions": ["1.1.3"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-accordion",
+      "versions": ["1.2.12"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-arrow",
+      "versions": ["1.1.7"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-checkbox",
+      "versions": ["1.3.3"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-collapsible",
+      "versions": ["1.1.12"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-collection",
+      "versions": ["1.1.7"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-compose-refs",
+      "versions": ["1.1.2"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-context",
+      "versions": ["1.1.2"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-dialog",
+      "versions": ["1.1.15"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-direction",
+      "versions": ["1.1.1"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-dismissable-layer",
+      "versions": ["1.1.11"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-dropdown-menu",
+      "versions": ["2.1.16"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-focus-guards",
+      "versions": ["1.1.3"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-focus-scope",
+      "versions": ["1.1.7"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-id",
+      "versions": ["1.1.1"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-label",
+      "versions": ["2.1.7"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-menu",
+      "versions": ["2.1.16"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-popover",
+      "versions": ["1.1.15"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-popper",
+      "versions": ["1.2.8"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-portal",
+      "versions": ["1.1.9"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-presence",
+      "versions": ["1.1.5"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-primitive",
+      "versions": ["2.1.3", "2.1.4"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-roving-focus",
+      "versions": ["1.1.11"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-scroll-area",
+      "versions": ["1.2.10"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-select",
+      "versions": ["2.2.6"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-slot",
+      "versions": ["1.2.3", "1.2.4"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-switch",
+      "versions": ["1.2.6"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-tabs",
+      "versions": ["1.1.13"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-tooltip",
+      "versions": ["1.2.8"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-use-callback-ref",
+      "versions": ["1.1.1"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-use-controllable-state",
+      "versions": ["1.2.2"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-use-effect-event",
+      "versions": ["0.0.2"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-use-escape-keydown",
+      "versions": ["1.1.1"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-use-layout-effect",
+      "versions": ["1.1.1"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-use-previous",
+      "versions": ["1.1.1"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-use-rect",
+      "versions": ["1.1.1"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-use-size",
+      "versions": ["1.1.1"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/react-visually-hidden",
+      "versions": ["1.2.3", "1.2.4"]
+    },
+    {
+      "homepage": "https://radix-ui.com/primitives",
+      "license": "MIT",
+      "name": "@radix-ui/rect",
+      "versions": ["1.1.1"]
+    },
+    {
+      "author": "Mark Erikson",
+      "description": "The official, opinionated, batteries-included toolset for efficient Redux development",
+      "homepage": "https://redux-toolkit.js.org",
+      "license": "MIT",
+      "name": "@reduxjs/toolkit",
+      "versions": ["2.11.0"]
+    },
+    {
+      "author": "Colin McDonnell",
+      "description": "A standard interface for TypeScript schema validation libraries",
+      "homepage": "https://standardschema.dev",
+      "license": "MIT",
+      "name": "@standard-schema/spec",
+      "versions": ["1.0.0"]
+    },
+    {
+      "author": "Fabian Hiller",
+      "description": "The official runtime utils for Standard Schema",
+      "homepage": "https://github.com/standard-schema/standard-schema#readme",
+      "license": "MIT",
+      "name": "@standard-schema/utils",
+      "versions": ["0.3.0"]
+    },
+    {
+      "author": "tannerlinsley",
+      "description": "The framework agnostic core that powers TanStack Query",
+      "homepage": "https://tanstack.com/query",
+      "license": "MIT",
+      "name": "@tanstack/query-core",
+      "versions": ["5.90.3"]
+    },
+    {
+      "author": "tannerlinsley",
+      "description": "Hooks for managing, caching and syncing asynchronous and remote data in React",
+      "homepage": "https://tanstack.com/query",
+      "license": "MIT",
+      "name": "@tanstack/react-query",
+      "versions": ["5.90.3"]
+    },
+    {
+      "author": "Tanner Linsley",
+      "description": "Headless UI for virtualizing scrollable elements in React",
+      "homepage": "https://tanstack.com/virtual",
+      "license": "MIT",
+      "name": "@tanstack/react-virtual",
+      "versions": ["3.13.23"]
+    },
+    {
+      "author": "Tanner Linsley",
+      "description": "Headless UI for virtualizing scrollable elements in TS/JS + Frameworks",
+      "homepage": "https://tanstack.com/virtual",
+      "license": "MIT",
+      "name": "@tanstack/virtual-core",
+      "versions": ["3.13.23"]
+    },
+    {
+      "description": "TypeScript definitions for d3-array",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/d3-array",
+      "license": "MIT",
+      "name": "@types/d3-array",
+      "versions": ["3.2.2"]
+    },
+    {
+      "description": "TypeScript definitions for d3-color",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/d3-color",
+      "license": "MIT",
+      "name": "@types/d3-color",
+      "versions": ["3.1.3"]
+    },
+    {
+      "description": "TypeScript definitions for d3-ease",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/d3-ease",
+      "license": "MIT",
+      "name": "@types/d3-ease",
+      "versions": ["3.0.2"]
+    },
+    {
+      "description": "TypeScript definitions for d3-interpolate",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/d3-interpolate",
+      "license": "MIT",
+      "name": "@types/d3-interpolate",
+      "versions": ["3.0.4"]
+    },
+    {
+      "description": "TypeScript definitions for d3-path",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/d3-path",
+      "license": "MIT",
+      "name": "@types/d3-path",
+      "versions": ["3.1.1"]
+    },
+    {
+      "description": "TypeScript definitions for d3-scale",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/d3-scale",
+      "license": "MIT",
+      "name": "@types/d3-scale",
+      "versions": ["4.0.9"]
+    },
+    {
+      "description": "TypeScript definitions for d3-shape",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/d3-shape",
+      "license": "MIT",
+      "name": "@types/d3-shape",
+      "versions": ["3.1.7"]
+    },
+    {
+      "description": "TypeScript definitions for d3-time",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/d3-time",
+      "license": "MIT",
+      "name": "@types/d3-time",
+      "versions": ["3.0.4"]
+    },
+    {
+      "description": "TypeScript definitions for d3-timer",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/d3-timer",
+      "license": "MIT",
+      "name": "@types/d3-timer",
+      "versions": ["3.0.2"]
+    },
+    {
+      "description": "TypeScript definitions for prop-types",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/prop-types",
+      "license": "MIT",
+      "name": "@types/prop-types",
+      "versions": ["15.7.15"]
+    },
+    {
+      "description": "TypeScript definitions for react",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react",
+      "license": "MIT",
+      "name": "@types/react",
+      "versions": ["18.3.23"]
+    },
+    {
+      "description": "TypeScript definitions for react-dom",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/react-dom",
+      "license": "MIT",
+      "name": "@types/react-dom",
+      "versions": ["18.3.7"]
+    },
+    {
+      "description": "TypeScript definitions for use-sync-external-store",
+      "homepage": "https://github.com/DefinitelyTyped/DefinitelyTyped/tree/master/types/use-sync-external-store",
+      "license": "MIT",
+      "name": "@types/use-sync-external-store",
+      "versions": ["0.0.6"]
+    },
+    {
+      "author": "Anton Korzunov",
+      "description": "Cast aria-hidden to everything, except...",
+      "homepage": "https://github.com/theKashey/aria-hidden#readme",
+      "license": "MIT",
+      "name": "aria-hidden",
+      "versions": ["1.2.6"]
+    },
+    {
+      "author": "Luke Edwards",
+      "description": "A tiny (239B) utility for constructing className strings conditionally.",
+      "homepage": "https://github.com/lukeed/clsx#readme",
+      "license": "MIT",
+      "name": "clsx",
+      "versions": ["2.1.1"]
+    },
+    {
+      "author": "Paco",
+      "homepage": "https://github.com/pacocoursey/cmdk#readme",
+      "license": "MIT",
+      "name": "cmdk",
+      "versions": ["1.1.1"]
+    },
+    {
+      "author": "Marijn Haverbeke",
+      "description": "Basic configuration for the CodeMirror code editor",
+      "homepage": "https://github.com/codemirror/basic-setup#readme",
+      "license": "MIT",
+      "name": "codemirror",
+      "versions": ["6.0.2"]
+    },
+    {
+      "author": "Marijn Haverbeke",
+      "description": "Tiny DOM-element-creation utility",
+      "homepage": "https://github.com/marijnh/crelt#readme",
+      "license": "MIT",
+      "name": "crelt",
+      "versions": ["1.0.6"]
+    },
+    {
+      "author": "Fredrik Nicol",
+      "description": "Strict TypeScript and Flow types for style based on MDN data",
+      "homepage": "https://github.com/frenic/csstype#readme",
+      "license": "MIT",
+      "name": "csstype",
+      "versions": ["3.1.3"]
+    },
+    {
+      "author": "Michael Mclaughlin",
+      "description": "An arbitrary-precision Decimal type for JavaScript.",
+      "homepage": "https://github.com/MikeMcl/decimal.js-light#readme",
+      "license": "MIT",
+      "name": "decimal.js-light",
+      "versions": ["2.5.1"]
+    },
+    {
+      "author": "Ilya Kantor",
+      "description": "Detect Node.JS (as opposite to browser environment). ESM modification",
+      "homepage": "https://github.com/thekashey/detect-node",
+      "license": "MIT",
+      "name": "detect-node-es",
+      "versions": ["1.1.0"]
+    },
+    {
+      "description": "A state-of-the-art, high-performance JavaScript utility library with a small bundle size and strong type annotations.",
+      "homepage": "https://es-toolkit.dev",
+      "license": "MIT",
+      "name": "es-toolkit",
+      "versions": ["1.42.0"]
+    },
+    {
+      "author": "Arnout Kazemier",
+      "description": "EventEmitter3 focuses on performance while maintaining a Node.js AND browser compatible interface.",
+      "homepage": "https://github.com/primus/eventemitter3#readme",
+      "license": "MIT",
+      "name": "eventemitter3",
+      "versions": ["5.0.1"]
+    },
+    {
+      "author": "Matt Perry",
+      "description": "A simple and powerful JavaScript animation library",
+      "homepage": "https://github.com/motiondivision/motion#readme",
+      "license": "MIT",
+      "name": "framer-motion",
+      "versions": ["12.23.25"]
+    },
+    {
+      "author": "Anton Korzunov",
+      "description": "returns nonce",
+      "homepage": "https://github.com/theKashey/get-nonce",
+      "license": "MIT",
+      "name": "get-nonce",
+      "versions": ["1.0.1"]
+    },
+    {
+      "author": "Henrik Joreteg",
+      "description": "Parses well-formed HTML (meaning all tags closed) into an AST and back. quickly.",
+      "homepage": "https://github.com/henrikjoreteg/html-parse-stringify",
+      "license": "MIT",
+      "name": "html-parse-stringify",
+      "versions": ["3.0.1"]
+    },
+    {
+      "author": "Jan Mühlemann",
+      "description": "i18next internationalization framework",
+      "homepage": "https://www.i18next.com",
+      "license": "MIT",
+      "name": "i18next",
+      "versions": ["25.5.2"]
+    },
+    {
+      "author": "Michel Weststrate",
+      "description": "Create your next immutable state by mutating the current one",
+      "homepage": "https://github.com/immerjs/immer#readme",
+      "license": "MIT",
+      "name": "immer",
+      "versions": ["10.2.0", "11.0.1"]
+    },
+    {
+      "author": "Simon Lydell",
+      "description": "A regex that tokenizes JavaScript.",
+      "homepage": "https://github.com/lydell/js-tokens#readme",
+      "license": "MIT",
+      "name": "js-tokens",
+      "versions": ["4.0.0"]
+    },
+    {
+      "author": "Microsoft Corporation",
+      "description": "Scanner and parser for JSON with comments.",
+      "homepage": "https://github.com/microsoft/node-jsonc-parser#readme",
+      "license": "MIT",
+      "name": "jsonc-parser",
+      "versions": ["3.3.1"]
+    },
+    {
+      "author": "Andres Suarez",
+      "description": "Fast (and loose) selective `process.env` replacer using js-tokens instead of an AST",
+      "homepage": "https://github.com/zertosh/loose-envify",
+      "license": "MIT",
+      "name": "loose-envify",
+      "versions": ["1.4.0"]
+    },
+    {
+      "author": "Matt Perry",
+      "homepage": "https://github.com/motiondivision/motion#readme",
+      "license": "MIT",
+      "name": "motion-dom",
+      "versions": ["12.23.23"]
+    },
+    {
+      "author": "Matt Perry",
+      "homepage": "https://github.com/motiondivision/motion#readme",
+      "license": "MIT",
+      "name": "motion-utils",
+      "versions": ["12.23.6"]
+    },
+    {
+      "description": "React is a JavaScript library for building user interfaces.",
+      "homepage": "https://reactjs.org/",
+      "license": "MIT",
+      "name": "react",
+      "versions": ["18.3.1"]
+    },
+    {
+      "description": "React package for working with the DOM.",
+      "homepage": "https://reactjs.org/",
+      "license": "MIT",
+      "name": "react-dom",
+      "versions": ["18.3.1"]
+    },
+    {
+      "author": "Beier",
+      "description": "Performant, flexible and extensible forms library for React Hooks",
+      "homepage": "https://react-hook-form.com",
+      "license": "MIT",
+      "name": "react-hook-form",
+      "versions": ["7.65.0"]
+    },
+    {
+      "author": "Jan Mühlemann",
+      "description": "Internationalization for react done right. Using the i18next i18n ecosystem.",
+      "homepage": "https://github.com/i18next/react-i18next",
+      "license": "MIT",
+      "name": "react-i18next",
+      "versions": ["16.0.0"]
+    },
+    {
+      "description": "Brand checking of React Elements.",
+      "homepage": "https://reactjs.org/",
+      "license": "MIT",
+      "name": "react-is",
+      "versions": ["17.0.2"]
+    },
+    {
+      "author": "Dan Abramov",
+      "description": "Official React bindings for Redux",
+      "homepage": "https://github.com/reduxjs/react-redux",
+      "license": "MIT",
+      "name": "react-redux",
+      "versions": ["9.2.0"]
+    },
+    {
+      "author": "Anton Korzunov",
+      "description": "Disables scroll outside of `children` node.",
+      "homepage": "https://github.com/theKashey/react-remove-scroll#readme",
+      "license": "MIT",
+      "name": "react-remove-scroll",
+      "versions": ["2.7.1"]
+    },
+    {
+      "author": "Anton Korzunov",
+      "description": "Removes body scroll without content _shake_",
+      "homepage": "https://github.com/theKashey/react-remove-scroll-bar#readme",
+      "license": "MIT",
+      "name": "react-remove-scroll-bar",
+      "versions": ["2.3.8"]
+    },
+    {
+      "author": "Anton Korzunov",
+      "description": "Just create a single stylesheet...",
+      "homepage": "https://github.com/theKashey/react-style-singleton#readme",
+      "license": "MIT",
+      "name": "react-style-singleton",
+      "versions": ["2.2.3"]
+    },
+    {
+      "author": "recharts group",
+      "description": "React charts",
+      "homepage": "https://github.com/recharts/recharts",
+      "license": "MIT",
+      "name": "recharts",
+      "versions": ["3.5.1"]
+    },
+    {
+      "description": "Predictable state container for JavaScript apps",
+      "homepage": "http://redux.js.org",
+      "license": "MIT",
+      "name": "redux",
+      "versions": ["5.0.1"]
+    },
+    {
+      "author": "Dan Abramov",
+      "description": "Thunk middleware for Redux.",
+      "homepage": "https://github.com/reduxjs/redux-thunk",
+      "license": "MIT",
+      "name": "redux-thunk",
+      "versions": ["3.1.0"]
+    },
+    {
+      "description": "Selectors for Redux.",
+      "homepage": "https://github.com/reduxjs/reselect#readme",
+      "license": "MIT",
+      "name": "reselect",
+      "versions": ["5.1.1"]
+    },
+    {
+      "description": "Cooperative scheduler for the browser environment.",
+      "homepage": "https://reactjs.org/",
+      "license": "MIT",
+      "name": "scheduler",
+      "versions": ["0.23.2"]
+    },
+    {
+      "author": "Emil Kowalski",
+      "description": "An opinionated toast component for React.",
+      "homepage": "https://sonner.emilkowal.ski/",
+      "license": "MIT",
+      "name": "sonner",
+      "versions": ["2.0.7"]
+    },
+    {
+      "author": "Marijn Haverbeke",
+      "description": "A minimal CSS module shim",
+      "homepage": "https://github.com/marijnh/style-mod#readme",
+      "license": "MIT",
+      "name": "style-mod",
+      "versions": ["4.1.2"]
+    },
+    {
+      "author": "Dany Castillo",
+      "description": "Merge Tailwind CSS classes without style conflicts",
+      "homepage": "https://github.com/dcastil/tailwind-merge",
+      "license": "MIT",
+      "name": "tailwind-merge",
+      "versions": ["3.3.1"]
+    },
+    {
+      "author": "Alex Reardon",
+      "description": "A tiny invariant function",
+      "homepage": "https://github.com/alexreardon/tiny-invariant#readme",
+      "license": "MIT",
+      "name": "tiny-invariant",
+      "versions": ["1.3.3"]
+    },
+    {
+      "author": "theKashey",
+      "description": "The same useRef, but with callback",
+      "homepage": "https://github.com/theKashey/use-callback-ref#readme",
+      "license": "MIT",
+      "name": "use-callback-ref",
+      "versions": ["1.3.3"]
+    },
+    {
+      "author": "theKashey",
+      "description": "Sidecar code splitting utils",
+      "homepage": "https://github.com/theKashey/use-sidecar",
+      "license": "MIT",
+      "name": "use-sidecar",
+      "versions": ["1.1.3"]
+    },
+    {
+      "description": "Backwards compatible shim for React's useSyncExternalStore. Works with any React that supports hooks.",
+      "homepage": "https://github.com/facebook/react#readme",
+      "license": "MIT",
+      "name": "use-sync-external-store",
+      "versions": ["1.6.0"]
+    },
+    {
+      "author": "hemanth.hm",
+      "description": "Array of \"void elements\" defined by the HTML specification.",
+      "homepage": "https://github.com/jadejs/void-elements",
+      "license": "MIT",
+      "name": "void-elements",
+      "versions": ["3.1.0"]
+    },
+    {
+      "author": "Marijn Haverbeke",
+      "description": "Get a KeyboardEvent.key-style string from an event",
+      "homepage": "https://github.com/marijnh/w3c-keyname#readme",
+      "license": "MIT",
+      "name": "w3c-keyname",
+      "versions": ["2.2.8"]
+    },
+    {
+      "author": "Colin McDonnell",
+      "description": "TypeScript-first schema declaration and validation library with static type inference",
+      "homepage": "https://zod.dev",
+      "license": "MIT",
+      "name": "zod",
+      "versions": ["4.1.12"]
+    }
+  ],
+  "MIT AND ISC": [
+    {
+      "author": "Formidable",
+      "description": "Vendored dependencies for Victory",
+      "homepage": "https://commerce.nearform.com/open-source/victory",
+      "license": "MIT AND ISC",
+      "name": "victory-vendor",
+      "versions": ["37.3.6"]
+    }
+  ],
+  "MIT OR Apache-2.0": [
+    {
+      "homepage": "https://github.com/tauri-apps/plugins-workspace#readme",
+      "license": "MIT OR Apache-2.0",
+      "name": "@tauri-apps/plugin-dialog",
+      "versions": ["2.4.0"]
+    },
+    {
+      "homepage": "https://github.com/tauri-apps/plugins-workspace#readme",
+      "license": "MIT OR Apache-2.0",
+      "name": "@tauri-apps/plugin-process",
+      "versions": ["2.3.0"]
+    },
+    {
+      "description": "Simple, persistent key-value store.",
+      "homepage": "https://github.com/tauri-apps/plugins-workspace#readme",
+      "license": "MIT OR Apache-2.0",
+      "name": "@tauri-apps/plugin-store",
+      "versions": ["2.4.0"]
+    },
+    {
+      "homepage": "https://github.com/tauri-apps/plugins-workspace#readme",
+      "license": "MIT OR Apache-2.0",
+      "name": "@tauri-apps/plugin-updater",
+      "versions": ["2.9.0"]
+    }
+  ]
+}

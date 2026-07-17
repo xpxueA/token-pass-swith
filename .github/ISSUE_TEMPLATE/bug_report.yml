@@ -1,0 +1,65 @@
+name: "Bug Report"
+description: "Report errors or unexpected behavior in Token Pass Swith."
+labels:
+  - bug
+body:
+  - type: checkboxes
+    attributes:
+      label: Self Checks
+      options:
+        - label: "I have searched existing issues in this public repository."
+          required: true
+  - type: input
+    attributes:
+      label: Token Pass Swith Version
+      description: "See the Settings page in the app."
+      placeholder: "e.g. 3.16.5"
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Operating System
+      multiple: false
+      options:
+        - Windows
+        - macOS
+        - Linux
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Related App
+      multiple: true
+      options:
+        - Claude Code
+        - Codex
+        - Gemini CLI
+        - OpenCode
+        - OpenClaw
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Steps to Reproduce
+      placeholder: |
+        1. Go to ...
+        2. Click ...
+        3. See error ...
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected Behavior
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Actual Behavior
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Additional Context
+    validations:
+      required: false

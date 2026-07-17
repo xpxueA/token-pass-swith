@@ -1,0 +1,40 @@
+name: "Question"
+description: "Ask about Token Pass Swith usage or configuration."
+labels:
+  - question
+body:
+  - type: checkboxes
+    attributes:
+      label: Self Checks
+      options:
+        - label: "I have searched existing issues in this public repository."
+          required: true
+  - type: dropdown
+    attributes:
+      label: Related App
+      multiple: true
+      options:
+        - Claude Code
+        - Codex
+        - Gemini CLI
+        - OpenCode
+        - OpenClaw
+        - General
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Your Question
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: What Have You Tried
+    validations:
+      required: false
+  - type: textarea
+    attributes:
+      label: Environment
+      placeholder: "e.g. Windows 11, Token Pass Swith 3.16.5"
+    validations:
+      required: false
