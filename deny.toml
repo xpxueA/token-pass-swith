@@ -1,0 +1,61 @@
+[advisories]
+# These are unmaintained-only advisories in Tauri's current transitive graph.
+# None reports a security vulnerability or has a safe compatible upgrade as of
+# 2026-07-17. See docs/guides/release-trust-chain.md for dependency paths and
+# the removal policy. New advisories still fail the build.
+ignore = [
+  # Tauri Linux support still depends on the archived gtk-rs GTK3 bindings.
+  "RUSTSEC-2024-0411",
+  "RUSTSEC-2024-0412",
+  "RUSTSEC-2024-0413",
+  "RUSTSEC-2024-0414",
+  "RUSTSEC-2024-0415",
+  "RUSTSEC-2024-0416",
+  "RUSTSEC-2024-0417",
+  "RUSTSEC-2024-0418",
+  "RUSTSEC-2024-0419",
+  "RUSTSEC-2024-0420",
+  # gtk-rs macros still depend on proc-macro-error.
+  "RUSTSEC-2024-0370",
+  # Tauri's HTML parser dependency still uses fxhash.
+  "RUSTSEC-2025-0057",
+  # Tauri's urlpattern dependency still uses the archived rust-unic crates.
+  "RUSTSEC-2025-0075",
+  "RUSTSEC-2025-0080",
+  "RUSTSEC-2025-0081",
+  "RUSTSEC-2025-0098",
+  "RUSTSEC-2025-0100",
+]
+
+[licenses]
+version = 2
+confidence-threshold = 0.8
+unused-allowed-license = "allow"
+allow = [
+  "0BSD",
+  "Apache-2.0",
+  "Apache-2.0 WITH LLVM-exception",
+  "BSD-2-Clause",
+  "BSD-3-Clause",
+  "BSL-1.0",
+  "CC0-1.0",
+  "CDLA-Permissive-2.0",
+  "ISC",
+  "MIT",
+  "MPL-2.0",
+  "OpenSSL",
+  "Unicode-3.0",
+  "Unicode-DFS-2016",
+  "Zlib",
+]
+
+[bans]
+multiple-versions = "warn"
+wildcards = "allow"
+
+[sources]
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = [
+  "https://github.com/rust-lang/crates.io-index",
+]

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Token Pass Swith Rust dependency licenses</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 70rem; margin: 2rem auto; padding: 0 1rem; line-height: 1.5; }
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; border: 1px solid #ccc; padding: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>Token Pass Swith Rust dependency licenses</h1>
+  {{#each licenses}}
+    <section>
+      <h2>{{name}}</h2>
+      <p>Used by:</p>
+      <ul>
+        {{#each used_by}}
+          <li>{{crate.name}} {{crate.version}}</li>
+        {{/each}}
+      </ul>
+      <pre>{{text}}</pre>
+    </section>
+  {{/each}}
+</body>
+</html>

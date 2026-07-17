@@ -1,0 +1,417 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  windows-release:
+    name: Signed Windows x64 draft release
+    runs-on: windows-2022
+    timeout-minutes: 90
+    environment: release
+    permissions:
+      contents: write
+    env:
+      RELEASE_PUBLIC_BASE_URL: ${{ vars.RELEASE_PUBLIC_BASE_URL }}
+      WINDOWS_TIMESTAMP_URL: ${{ vars.WINDOWS_TIMESTAMP_URL }}
+      TOKEN_PASS_GEMINI_OAUTH_CLIENT_ID: ${{ secrets.TOKEN_PASS_GEMINI_OAUTH_CLIENT_ID }}
+      TOKEN_PASS_GEMINI_OAUTH_CLIENT_SECRET: ${{ secrets.TOKEN_PASS_GEMINI_OAUTH_CLIENT_SECRET }}
+
+    steps:
+      - name: Checkout protected tag
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+        with:
+          fetch-depth: 0
+
+      - name: Verify tag, branch, version, and release credentials
+        shell: pwsh
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+          WINDOWS_CERTIFICATE: ${{ secrets.WINDOWS_CERTIFICATE }}
+          WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          foreach ($name in @(
+            'TAURI_SIGNING_PRIVATE_KEY',
+            'TAURI_SIGNING_PRIVATE_KEY_PASSWORD',
+            'WINDOWS_CERTIFICATE',
+            'WINDOWS_CERTIFICATE_PASSWORD',
+            'TOKEN_PASS_GEMINI_OAUTH_CLIENT_ID',
+            'TOKEN_PASS_GEMINI_OAUTH_CLIENT_SECRET',
+            'RELEASE_PUBLIC_BASE_URL',
+            'WINDOWS_TIMESTAMP_URL'
+          )) {
+            if ([string]::IsNullOrWhiteSpace((Get-Item "Env:$name").Value)) {
+              throw "Missing release environment value: $name"
+            }
+          }
+
+          if ($env:RELEASE_PUBLIC_BASE_URL -ne 'https://tokenpass.cloud/downloads/token-pass-swith') {
+            throw 'RELEASE_PUBLIC_BASE_URL must use tokenpass.cloud'
+          }
+          if ($env:WINDOWS_TIMESTAMP_URL -notmatch '^https?://') {
+            throw 'WINDOWS_TIMESTAMP_URL must be HTTP(S)'
+          }
+          if ($env:GITHUB_REF_NAME -notmatch '^v(?<version>[0-9]+\.[0-9]+\.[0-9]+)$') {
+            throw 'Release tag must use vMAJOR.MINOR.PATCH'
+          }
+
+          $version = $Matches.version
+          if ([version]$version -lt [version]'3.16.6') {
+            throw 'The first public binary release must be v3.16.6 or newer'
+          }
+          $packageVersion = (Get-Content package.json -Raw | ConvertFrom-Json).version
+          $tauriVersion = (Get-Content src-tauri/tauri.conf.json -Raw | ConvertFrom-Json).version
+          $cargoVersion = (
+            Select-String -Path src-tauri/Cargo.toml -Pattern '^version = "([^"]+)"$'
+          ).Matches[0].Groups[1].Value
+          foreach ($actual in @($packageVersion, $tauriVersion, $cargoVersion)) {
+            if ($actual -ne $version) {
+              throw "Release tag version $version does not match project version $actual"
+            }
+          }
+
+          git fetch origin main --no-tags
+          git merge-base --is-ancestor $env:GITHUB_SHA origin/main
+          if ($LASTEXITCODE -ne 0) {
+            throw 'Release tags must point to a commit on main'
+          }
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+        with:
+          version: 10.12.3
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: ".node-version"
+          cache: pnpm
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@4cda84d5c5c54efe2404f9d843567869ab1699d4
+        with:
+          toolchain: 1.95.0
+          targets: x86_64-pc-windows-msvc
+
+      - name: Cache Cargo registry and build
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            src-tauri/target
+          key: windows-release-cargo-1.95-${{ hashFiles('src-tauri/Cargo.lock') }}
+
+      - name: Install dependencies and audit tools
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          pnpm install --frozen-lockfile
+          cargo install cargo-deny --locked --version 0.20.2
+          cargo install cargo-about --locked --version 0.9.1 --features cli
+
+      - name: Verify source and dependency compliance
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          pnpm check:public-compliance
+          pnpm check:release-trust
+          pnpm icons:check
+          node scripts/check-npm-licenses.mjs --output THIRD_PARTY_NPM_LICENSES.json
+          Push-Location src-tauri
+          cargo deny --config ../deny.toml check advisories licenses sources
+          Pop-Location
+          cargo about generate --manifest-path src-tauri/Cargo.toml -o THIRD_PARTY_RUST_LICENSES.html about.hbs
+          node scripts/normalize-rust-notices.mjs
+
+      - name: Prepare Tauri updater signing key
+        shell: bash
+        env:
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          raw="$TAURI_SIGNING_PRIVATE_KEY"
+          key_path="$RUNNER_TEMP/tauri-signing.key"
+
+          if printf '%s' "$raw" | head -n1 | grep -q '^untrusted comment:'; then
+            printf '%s\n' "$raw" > "$key_path"
+          elif decoded=$(printf '%s' "$raw" | base64 --decode 2>/dev/null) && printf '%s' "$decoded" | head -n1 | grep -q '^untrusted comment:'; then
+            printf '%s\n' "$decoded" > "$key_path"
+          elif printf '%s' "$raw" | tr -d '\r\n' | grep -Eq '^[A-Za-z0-9+/=]+$'; then
+            one_line=$(printf '%s' "$raw" | tr -d '\r\n')
+            printf '%s\n%s\n' 'untrusted comment: tauri signing key' "$one_line" > "$key_path"
+          else
+            echo 'TAURI_SIGNING_PRIVATE_KEY format is not recognized' >&2
+            exit 1
+          fi
+
+          key_b64=$(base64 < "$key_path" | tr -d '\r\n')
+          echo "TAURI_SIGNING_PRIVATE_KEY=$key_b64" >> "$GITHUB_ENV"
+          echo "TAURI_SIGNING_PRIVATE_KEY_PASSWORD=$TAURI_SIGNING_PRIVATE_KEY_PASSWORD" >> "$GITHUB_ENV"
+          rm -f "$key_path"
+
+      - name: Import Windows Authenticode certificate
+        shell: pwsh
+        env:
+          WINDOWS_CERTIFICATE: ${{ secrets.WINDOWS_CERTIFICATE }}
+          WINDOWS_CERTIFICATE_PASSWORD: ${{ secrets.WINDOWS_CERTIFICATE_PASSWORD }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $pfxPath = Join-Path $env:RUNNER_TEMP 'token-pass-swith-signing.pfx'
+          try {
+            $certificateBytes = [Convert]::FromBase64String(
+              ($env:WINDOWS_CERTIFICATE -replace '\s', '')
+            )
+          } catch {
+            throw 'WINDOWS_CERTIFICATE is not valid base64'
+          }
+          [IO.File]::WriteAllBytes($pfxPath, $certificateBytes)
+          $password = ConvertTo-SecureString $env:WINDOWS_CERTIFICATE_PASSWORD -AsPlainText -Force
+          $imported = Import-PfxCertificate -FilePath $pfxPath -CertStoreLocation Cert:\CurrentUser\My -Password $password
+          Remove-Item -LiteralPath $pfxPath -Force
+
+          $thumbprints = @($imported) |
+            Where-Object { -not [string]::IsNullOrWhiteSpace($_.Thumbprint) } |
+            ForEach-Object Thumbprint |
+            Select-Object -Unique
+          $certificate = @($imported) | Where-Object HasPrivateKey | Select-Object -First 1
+          if ($null -eq $certificate) {
+            throw 'Imported certificate does not contain a private key'
+          }
+          if ((Get-Date) -lt $certificate.NotBefore -or (Get-Date) -ge $certificate.NotAfter) {
+            throw 'Imported certificate is outside its validity period'
+          }
+
+          $codeSigningOid = '1.3.6.1.5.5.7.3.3'
+          $hasCodeSigningEku = $false
+          foreach ($extension in @(
+            $certificate.Extensions | Where-Object { $_.Oid.Value -eq '2.5.29.37' }
+          )) {
+            if (@($extension.EnhancedKeyUsages | Where-Object Value -eq $codeSigningOid).Count -gt 0) {
+              $hasCodeSigningEku = $true
+            }
+          }
+          if (-not $hasCodeSigningEku) {
+            throw 'Imported certificate is not valid for code signing'
+          }
+
+          $configPath = Join-Path $env:RUNNER_TEMP 'tauri-windows-signing.json'
+          @{
+            bundle = @{
+              windows = @{
+                certificateThumbprint = $certificate.Thumbprint
+                digestAlgorithm = 'sha256'
+                timestampUrl = $env:WINDOWS_TIMESTAMP_URL
+              }
+            }
+          } | ConvertTo-Json -Depth 5 | Set-Content -LiteralPath $configPath -Encoding utf8
+
+          "TAURI_WINDOWS_SIGNING_CONFIG=$configPath" | Out-File $env:GITHUB_ENV -Append -Encoding utf8
+          "WINDOWS_CERTIFICATE_THUMBPRINT=$($certificate.Thumbprint)" | Out-File $env:GITHUB_ENV -Append -Encoding utf8
+          "WINDOWS_IMPORTED_CERTIFICATE_THUMBPRINTS=$($thumbprints -join ';')" | Out-File $env:GITHUB_ENV -Append -Encoding utf8
+
+      - name: Build signed Windows x64 MSI
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          pnpm tauri build --config $env:TAURI_WINDOWS_SIGNING_CONFIG --target x86_64-pc-windows-msvc --bundles msi
+
+      - name: Verify Authenticode, timestamp, manufacturer, and bundled notices
+        id: verify
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $targetRoot = 'src-tauri/target/x86_64-pc-windows-msvc/release'
+          $msi = Get-ChildItem -Path (Join-Path $targetRoot 'bundle') -Recurse -Filter *.msi | Select-Object -First 1
+          $updater = Get-ChildItem -Path (Join-Path $targetRoot 'bundle') -Recurse -Filter *.msi.zip | Select-Object -First 1
+          $exe = Join-Path $targetRoot 'token-pass-swith.exe'
+          if ($null -eq $msi -or $null -eq $updater -or -not (Test-Path -LiteralPath $exe)) {
+            throw 'Expected Windows release artifacts were not produced'
+          }
+
+          foreach ($artifact in @($exe, $msi.FullName)) {
+            $signature = Get-AuthenticodeSignature -FilePath $artifact
+            if ($signature.Status -ne 'Valid') {
+              throw "Authenticode verification failed for $artifact: $($signature.Status)"
+            }
+            if ($signature.SignerCertificate.Thumbprint -ne $env:WINDOWS_CERTIFICATE_THUMBPRINT) {
+              throw "Unexpected signer certificate for $artifact"
+            }
+            if ($null -eq $signature.TimeStamperCertificate) {
+              throw "Trusted timestamp is missing for $artifact"
+            }
+          }
+
+          $updaterExtract = Join-Path $env:RUNNER_TEMP 'updater-extract'
+          Expand-Archive -LiteralPath $updater.FullName -DestinationPath $updaterExtract -Force
+          $updaterMsi = Get-ChildItem -Path $updaterExtract -Recurse -Filter *.msi | Select-Object -First 1
+          if ($null -eq $updaterMsi) {
+            throw 'Windows updater archive does not contain an MSI'
+          }
+          $rawMsiHash = (Get-FileHash -LiteralPath $msi.FullName -Algorithm SHA256).Hash
+          $updaterMsiHash = (Get-FileHash -LiteralPath $updaterMsi.FullName -Algorithm SHA256).Hash
+          if ($rawMsiHash -ne $updaterMsiHash) {
+            throw 'Windows updater archive does not contain the verified MSI'
+          }
+
+          $installer = New-Object -ComObject WindowsInstaller.Installer
+          $database = $installer.GetType().InvokeMember(
+            'OpenDatabase',
+            'InvokeMethod',
+            $null,
+            $installer,
+            @($msi.FullName, 0)
+          )
+          $view = $database.GetType().InvokeMember(
+            'OpenView',
+            'InvokeMethod',
+            $null,
+            $database,
+            @("SELECT Value FROM Property WHERE Property='Manufacturer'")
+          )
+          $view.GetType().InvokeMember('Execute', 'InvokeMethod', $null, $view, $null) | Out-Null
+          $record = $view.GetType().InvokeMember('Fetch', 'InvokeMethod', $null, $view, $null)
+          $manufacturer = $record.GetType().InvokeMember('StringData', 'GetProperty', $null, $record, 1)
+          if ($manufacturer -ne 'Token Pass Swith') {
+            throw "Unexpected MSI Manufacturer: $manufacturer"
+          }
+
+          $extractRoot = Join-Path $env:RUNNER_TEMP 'msi-extract'
+          New-Item -ItemType Directory -Force -Path $extractRoot | Out-Null
+          $arguments = @('/a', $msi.FullName, '/qn', "TARGETDIR=$extractRoot")
+          $extract = Start-Process msiexec.exe -ArgumentList $arguments -Wait -PassThru
+          if ($extract.ExitCode -notin @(0, 3010)) {
+            throw "MSI extraction failed with exit code $($extract.ExitCode)"
+          }
+          $packagedNames = Get-ChildItem -Path $extractRoot -Recurse -File | ForEach-Object Name
+          foreach ($required in @(
+            'LICENSE',
+            'NOTICE.md',
+            'THIRD_PARTY_NOTICES.md',
+            'THIRD_PARTY_NPM_LICENSES.json',
+            'THIRD_PARTY_RUST_LICENSES.html'
+          )) {
+            if ($required -notin $packagedNames) {
+              throw "MSI does not contain required notice: $required"
+            }
+          }
+
+          $sigPath = "$($updater.FullName).sig"
+          if (-not (Test-Path -LiteralPath $sigPath)) {
+            throw 'Tauri updater signature was not produced'
+          }
+          "msi=$($msi.FullName)" | Out-File $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "updater=$($updater.FullName)" | Out-File $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "sig=$sigPath" | Out-File $env:GITHUB_OUTPUT -Append -Encoding utf8
+
+      - name: Assemble draft release and manual cloud publication bundle
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $tag = $env:GITHUB_REF_NAME
+          $version = $tag.Substring(1)
+          $installerName = "Token-Pass-Swith-$tag-Windows-x86_64.msi"
+          $updaterName = "Token-Pass-Swith-$tag-Windows-x86_64.msi.zip"
+          $releaseRoot = Join-Path $PWD 'release-assets'
+          $manualRoot = Join-Path $PWD 'manual-publication'
+          $publicRoot = Join-Path $manualRoot 'public'
+          $versionRoot = Join-Path $publicRoot "releases\$tag"
+          New-Item -ItemType Directory -Force -Path $releaseRoot,$versionRoot | Out-Null
+
+          Copy-Item -LiteralPath '${{ steps.verify.outputs.msi }}' -Destination (Join-Path $releaseRoot $installerName)
+          Copy-Item -LiteralPath '${{ steps.verify.outputs.updater }}' -Destination (Join-Path $releaseRoot $updaterName)
+          Copy-Item -LiteralPath '${{ steps.verify.outputs.sig }}' -Destination (Join-Path $releaseRoot "$updaterName.sig")
+          Copy-Item LICENSE,NOTICE.md,THIRD_PARTY_NOTICES.md,THIRD_PARTY_NPM_LICENSES.json,THIRD_PARTY_RUST_LICENSES.html -Destination $releaseRoot
+
+          $signature = (Get-Content -LiteralPath (Join-Path $releaseRoot "$updaterName.sig") -Raw).Trim()
+          $latest = [ordered]@{
+            version = $version
+            notes = "Token Pass Swith $tag"
+            pub_date = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
+            platforms = [ordered]@{
+              'windows-x86_64' = [ordered]@{
+                signature = $signature
+                url = "$env:RELEASE_PUBLIC_BASE_URL/releases/$tag/$updaterName"
+              }
+            }
+          }
+          $latest | ConvertTo-Json -Depth 6 | Set-Content -LiteralPath (Join-Path $releaseRoot 'latest.json') -Encoding utf8
+
+          $checksumLines = Get-ChildItem -Path $releaseRoot -File |
+            Where-Object Name -ne 'SHA256SUMS.txt' |
+            Sort-Object Name |
+            ForEach-Object {
+              $hash = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+              "$hash  $($_.Name)"
+            }
+          $checksumLines | Set-Content -LiteralPath (Join-Path $releaseRoot 'SHA256SUMS.txt') -Encoding ascii
+
+          Get-ChildItem -Path $releaseRoot -File |
+            Where-Object Name -ne 'latest.json' |
+            Copy-Item -Destination $versionRoot
+          Copy-Item -LiteralPath (Join-Path $releaseRoot 'latest.json') -Destination (Join-Path $publicRoot 'latest.json')
+
+          $manualChecksums = Get-ChildItem -Path $publicRoot -File -Recurse |
+            Sort-Object FullName |
+            ForEach-Object {
+              $relative = [IO.Path]::GetRelativePath($manualRoot, $_.FullName).Replace('\', '/')
+              $hash = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+              "$hash  $relative"
+            }
+          $manualChecksums | Set-Content -LiteralPath (Join-Path $manualRoot 'MANUAL-PUBLISH-SHA256SUMS.txt') -Encoding ascii
+
+          @"
+          Token Pass Swith manual publication checklist
+          Release: $tag
+
+          1. Verify tokenpass.cloud DNS and HTTPS.
+          2. Upload public/releases/$tag/ and verify every SHA-256.
+          3. Confirm the MSI Authenticode signature and timestamp.
+          4. Upload public/latest.json last using an atomic rename.
+          5. Verify latest.json and every referenced URL over HTTPS.
+          6. Publish the GitHub Draft Release only after cloud smoke checks pass.
+          "@ | Set-Content -LiteralPath (Join-Path $manualRoot 'MANUAL-PUBLISH-CHECKLIST.txt') -Encoding utf8
+
+          $template = Get-Content .github/RELEASE_TEMPLATE.md -Raw
+          $notes = "# Token Pass Swith $tag" + [Environment]::NewLine + [Environment]::NewLine + $template
+          $notes | Set-Content release-notes.md -Encoding utf8
+
+      - name: Create GitHub Draft Release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          gh release create $env:GITHUB_REF_NAME --draft --verify-tag --title "Token Pass Swith $env:GITHUB_REF_NAME" --notes-file release-notes.md release-assets/*
+
+      - name: Upload manual publication bundle
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: manual-publication-${{ github.ref_name }}
+          path: manual-publication/
+          if-no-files-found: error
+          retention-days: 30
+          compression-level: 0
+
+      - name: Remove imported signing certificates
+        if: always()
+        shell: pwsh
+        run: |
+          foreach ($thumbprint in ($env:WINDOWS_IMPORTED_CERTIFICATE_THUMBPRINTS -split ';')) {
+            if (-not [string]::IsNullOrWhiteSpace($thumbprint)) {
+              Remove-Item -LiteralPath "Cert:\CurrentUser\My\$thumbprint" -Force -ErrorAction SilentlyContinue
+            }
+          }

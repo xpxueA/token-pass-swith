@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Token Pass Swith
+Comment=Dedicated Token Pass relay workstation
+Exec=token-pass-swith
+Icon=com.tokenpass.swith.desktop
+Terminal=false
+Categories=Utility;Development;
+StartupNotify=true

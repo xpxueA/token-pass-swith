@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>com.tokenpass.swith.desktop</id>
+  <name>Token Pass Swith</name>
+  <summary>Dedicated Token Pass relay workstation</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+
+  <description>
+    <p>Token Pass Swith is a cross-platform desktop app for managing Token Pass relay configurations for AI assistant clients.</p>
+    <ul>
+      <li>Manage Token Pass and user-managed provider endpoints</li>
+      <li>One-click switch and sync to client live configurations</li>
+      <li>MCP servers and Prompt/Skills management</li>
+    </ul>
+  </description>
+
+  <launchable type="desktop-id">com.tokenpass.swith.desktop.desktop</launchable>
+  <provides>
+    <binary>token-pass-swith</binary>
+  </provides>
+
+  <url type="homepage">https://github.com/xpxueA/token-pass-swith</url>
+  <url type="bugtracker">https://github.com/xpxueA/token-pass-swith/issues</url>
+</component>

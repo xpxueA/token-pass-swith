@@ -1,0 +1,286 @@
+name: Deep-Link Acceptance
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/deeplink-acceptance.yml"
+      - "src/components/DeepLinkImportDialog.tsx"
+      - "src/lib/api/deeplink.ts"
+      - "src-tauri/src/deeplink/**"
+      - "src-tauri/src/lib.rs"
+      - "src-tauri/tauri.conf.json"
+      - "src-tauri/wix/**"
+      - "src-tauri/tests/deeplink_import.rs"
+      - "tests/components/DeepLinkImportDialog.test.tsx"
+      - "LICENSE"
+      - "NOTICE.md"
+      - "THIRD_PARTY_NOTICES.md"
+      - "THIRD_PARTY_NPM_LICENSES.json"
+      - "THIRD_PARTY_RUST_LICENSES.html"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/deeplink-acceptance.yml"
+      - "src/components/DeepLinkImportDialog.tsx"
+      - "src/lib/api/deeplink.ts"
+      - "src-tauri/src/deeplink/**"
+      - "src-tauri/src/lib.rs"
+      - "src-tauri/tauri.conf.json"
+      - "src-tauri/wix/**"
+      - "src-tauri/tests/deeplink_import.rs"
+      - "tests/components/DeepLinkImportDialog.test.tsx"
+      - "LICENSE"
+      - "NOTICE.md"
+      - "THIRD_PARTY_NOTICES.md"
+      - "THIRD_PARTY_NPM_LICENSES.json"
+      - "THIRD_PARTY_RUST_LICENSES.html"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deeplink-acceptance-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  windows-acceptance:
+    name: Contract, MSI, and protocol smoke
+    runs-on: windows-2022
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version-file: ".node-version"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@f40ffcd9367d9f12939873eb1018b921a783ffaa # v4
+        with:
+          version: 10.12.3
+          run_install: false
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@4cda84d5c5c54efe2404f9d843567869ab1699d4
+        with:
+          toolchain: 1.95.0
+
+      - name: Cache Cargo registry and build
+        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            src-tauri/target
+          key: ${{ runner.os }}-deeplink-release-v1-${{ hashFiles('src-tauri/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-deeplink-release-v1-
+
+      - name: Install frontend dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check TypeScript contract
+        run: pnpm typecheck
+
+      - name: Test confirmation boundary
+        run: pnpm exec vitest run tests/components/DeepLinkImportDialog.test.tsx
+
+      - name: Test parser and provider imports
+        run: cargo test --release --manifest-path src-tauri/Cargo.toml --test deeplink_import
+
+      - name: Verify frozen protocol configuration
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $config = Get-Content src-tauri/tauri.conf.json -Raw | ConvertFrom-Json
+          $schemes = @($config.plugins.'deep-link'.desktop.schemes)
+
+          if ($config.productName -ne 'Token Pass Swith') {
+            throw "Unexpected product name: $($config.productName)"
+          }
+          if ($schemes.Count -ne 1 -or $schemes[0] -cne 'tokenpassswith') {
+            throw "Deep-link scheme must be exactly tokenpassswith"
+          }
+
+      - name: Build unsigned acceptance MSI
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $configOverridePath = Join-Path $env:RUNNER_TEMP 'tauri-acceptance.json'
+          @{
+            bundle = @{
+              createUpdaterArtifacts = $false
+            }
+          } | ConvertTo-Json -Depth 4 | Set-Content -Encoding utf8NoBOM $configOverridePath
+          pnpm tauri build --bundles msi --config $configOverridePath
+
+      - name: Collect installer and SHA256
+        id: package
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $config = Get-Content src-tauri/tauri.conf.json -Raw | ConvertFrom-Json
+          $source = Get-ChildItem src-tauri/target/release/bundle/msi -Filter *.msi -Recurse |
+            Select-Object -First 1
+          if ($null -eq $source) {
+            throw 'Windows MSI was not produced'
+          }
+
+          New-Item -ItemType Directory -Force acceptance-assets | Out-Null
+          $shortSha = $env:GITHUB_SHA.Substring(0, 12)
+          $filename = "Token-Pass-Swith-$($config.version)-$shortSha-Windows-x86_64.msi"
+          $destination = Join-Path acceptance-assets $filename
+          Copy-Item $source.FullName $destination
+          $sha256 = (Get-FileHash $destination -Algorithm SHA256).Hash.ToLowerInvariant()
+
+          "filename=$filename" | Out-File $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "path=$destination" | Out-File $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "sha256=$sha256" | Out-File $env:GITHUB_OUTPUT -Append -Encoding utf8
+          "version=$($config.version)" | Out-File $env:GITHUB_OUTPUT -Append -Encoding utf8
+
+      - name: Verify MSI manufacturer and bundled notices
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $msi = (Resolve-Path '${{ steps.package.outputs.path }}').Path
+          $installer = New-Object -ComObject WindowsInstaller.Installer
+          $database = $installer.GetType().InvokeMember(
+            'OpenDatabase',
+            'InvokeMethod',
+            $null,
+            $installer,
+            @($msi, 0)
+          )
+          $view = $database.GetType().InvokeMember(
+            'OpenView',
+            'InvokeMethod',
+            $null,
+            $database,
+            @("SELECT Value FROM Property WHERE Property='Manufacturer'")
+          )
+          $view.GetType().InvokeMember('Execute', 'InvokeMethod', $null, $view, $null) | Out-Null
+          $record = $view.GetType().InvokeMember('Fetch', 'InvokeMethod', $null, $view, $null)
+          $manufacturer = $record.GetType().InvokeMember('StringData', 'GetProperty', $null, $record, 1)
+          if ($manufacturer -ne 'Token Pass Swith') {
+            throw "Unexpected MSI Manufacturer: $manufacturer"
+          }
+
+          $extractRoot = Join-Path $env:RUNNER_TEMP 'acceptance-msi-extract'
+          New-Item -ItemType Directory -Force -Path $extractRoot | Out-Null
+          $arguments = @('/a', $msi, '/qn', "TARGETDIR=$extractRoot")
+          $extract = Start-Process msiexec.exe -ArgumentList $arguments -Wait -PassThru
+          if ($extract.ExitCode -notin @(0, 3010)) {
+            throw "MSI extraction failed with exit code $($extract.ExitCode)"
+          }
+          $packagedNames = Get-ChildItem -Path $extractRoot -Recurse -File | ForEach-Object Name
+          foreach ($required in @(
+            'LICENSE',
+            'NOTICE.md',
+            'THIRD_PARTY_NOTICES.md',
+            'THIRD_PARTY_NPM_LICENSES.json',
+            'THIRD_PARTY_RUST_LICENSES.html'
+          )) {
+            if ($required -notin $packagedNames) {
+              throw "MSI does not contain required notice: $required"
+            }
+          }
+
+      - name: Clean-install and verify protocol registration
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $installer = Resolve-Path '${{ steps.package.outputs.path }}'
+          $arguments = "/i `"$installer`" /qn /norestart"
+          $install = Start-Process msiexec.exe -ArgumentList $arguments -Wait -PassThru
+          if ($install.ExitCode -notin @(0, 3010)) {
+            throw "MSI installation failed with exit code $($install.ExitCode)"
+          }
+
+          $protocolKey = 'Registry::HKEY_CURRENT_USER\Software\Classes\tokenpassswith'
+          $commandKey = Join-Path $protocolKey 'shell\open\command'
+          if (-not (Test-Path $protocolKey) -or -not (Test-Path $commandKey)) {
+            throw 'tokenpassswith protocol was not registered for the current user'
+          }
+
+          $command = (Get-Item $commandKey).GetValue('')
+          if ($command -notmatch '^"(?<executable>[^"]+)"\s+"%1"$') {
+            throw "Unexpected protocol command: $command"
+          }
+          $registeredExecutable = Get-Item -LiteralPath $Matches.executable -ErrorAction Stop
+          $identity = @(
+            $registeredExecutable.VersionInfo.ProductName,
+            $registeredExecutable.VersionInfo.FileDescription,
+            $registeredExecutable.VersionInfo.OriginalFilename
+          ) -join ' '
+          if ($identity -notmatch 'Token Pass Swith|token-pass-swith\.exe') {
+            throw "Registered executable is not Token Pass Swith: $identity"
+          }
+          foreach ($invalid in @('tokenpassswitch', 'tokenpass-swith')) {
+            if (Test-Path "Registry::HKEY_CURRENT_USER\Software\Classes\$invalid") {
+              throw "Invalid protocol variant is registered: $invalid"
+            }
+          }
+
+      - name: Smoke-test closed and running client launch paths
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          Get-Process -Name 'token-pass-swith' -ErrorAction SilentlyContinue |
+            Stop-Process -Force
+
+          $safeUrl = 'tokenpassswith://v1/import?resource=provider&app=codex&name=REDACTED&endpoint=https%3A%2F%2Ftokenpass.cloud%2Fv1&apiKey=sk-REDACTED&model=REDACTED&homepage=https%3A%2F%2Ftokenpass.cloud&enabled=false'
+          Start-Process -FilePath $safeUrl
+
+          $client = $null
+          foreach ($attempt in 1..20) {
+            Start-Sleep -Seconds 1
+            $client = Get-Process -Name 'token-pass-swith' -ErrorAction SilentlyContinue |
+              Select-Object -First 1
+            if ($null -ne $client) { break }
+          }
+          if ($null -eq $client) {
+            throw 'Registered protocol did not launch Token Pass Swith'
+          }
+
+          $firstPid = $client.Id
+          Start-Process -FilePath $safeUrl
+          Start-Sleep -Seconds 5
+          $clients = @(Get-Process -Name 'token-pass-swith' -ErrorAction SilentlyContinue)
+          if ($clients.Count -ne 1 -or $clients[0].Id -ne $firstPid) {
+            throw 'Running-client deep link did not remain in the existing instance'
+          }
+
+      - name: Write acceptance manifest
+        shell: pwsh
+        run: |
+          $manifest = @"
+          Token Pass Swith version: ${{ steps.package.outputs.version }}
+          Client Git commit: $env:GITHUB_SHA
+          Installer filename: ${{ steps.package.outputs.filename }}
+          Installer SHA256: ${{ steps.package.outputs.sha256 }}
+          Installer signing: UNSIGNED acceptance build; production signing is still required
+          Windows runner: $env:RUNNER_OS $env:RUNNER_ARCH
+          Protocol registration: PASS (clean per-user install)
+          Closed-client launch smoke: PASS
+          Running-client single-instance smoke: PASS
+          Confirmation dialog manual evidence: REQUIRED
+          Claude/Codex/Gemini temporary-token request: REQUIRED
+          Temporary token revoked: REQUIRED
+          "@
+          $manifest | Set-Content acceptance-assets/deeplink-acceptance-manifest.txt -Encoding utf8
+
+      - name: Clean up installed client
+        if: always()
+        shell: pwsh
+        run: |
+          Get-Process -Name 'token-pass-swith' -ErrorAction SilentlyContinue |
+            Stop-Process -Force
+          $installer = '${{ steps.package.outputs.path }}'
+          if ($installer -and (Test-Path $installer)) {
+            $arguments = "/x `"$(Resolve-Path $installer)`" /qn /norestart"
+            Start-Process msiexec.exe -ArgumentList $arguments -Wait
+          }

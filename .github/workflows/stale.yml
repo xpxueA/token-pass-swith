@@ -1,0 +1,32 @@
+name: Close Stale Issues
+
+on:
+  schedule:
+    - cron: "0 0 * * *"
+  workflow_dispatch:
+
+permissions:
+  issues: write
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@1e223db275d687790206a7acac4d1a11bd6fe629 # v10
+        with:
+          days-before-stale: 60
+          days-before-close: 14
+          stale-issue-label: "stale"
+          stale-issue-message: |
+            此 issue 已有 60 天没有新活动，现标记为 `stale`。请回复以保持开启，否则将在 14 天后自动关闭。
+            This issue has had no activity for 60 days and is now marked `stale`. Reply to keep it open; otherwise, it will close automatically in 14 days.
+            В этой задаче не было активности 60 дней, поэтому она помечена как `stale`. Ответьте, чтобы оставить ее открытой; иначе она будет автоматически закрыта через 14 дней.
+          close-issue-message: |
+            此 issue 因长期无活动而自动关闭。如问题仍然存在，请重新打开。
+            This issue was closed automatically due to inactivity. Reopen it if the problem persists.
+            Задача автоматически закрыта из-за отсутствия активности. Откройте ее снова, если проблема сохраняется.
+          exempt-issue-labels: "security,performance"
+          exempt-issue-created-after: "2020-01-01"
+          operations-per-run: 100
+          days-before-pr-stale: -1
+          days-before-pr-close: -1
